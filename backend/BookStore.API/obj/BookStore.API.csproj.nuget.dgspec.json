@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\psand\\OneDrive\\Desktop\\school\\Mission11\\Mission11\\backend\\BookStore.API\\BookStore.API.csproj": {}
+    "C:\\Users\\psand\\OneDrive\\Desktop\\School\\Mission11\\Mission11\\backend\\BookStore.API\\BookStore.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\psand\\OneDrive\\Desktop\\school\\Mission11\\Mission11\\backend\\BookStore.API\\BookStore.API.csproj": {
+    "C:\\Users\\psand\\OneDrive\\Desktop\\School\\Mission11\\Mission11\\backend\\BookStore.API\\BookStore.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\psand\\OneDrive\\Desktop\\school\\Mission11\\Mission11\\backend\\BookStore.API\\BookStore.API.csproj",
+        "projectUniqueName": "C:\\Users\\psand\\OneDrive\\Desktop\\School\\Mission11\\Mission11\\backend\\BookStore.API\\BookStore.API.csproj",
         "projectName": "BookStore.API",
-        "projectPath": "C:\\Users\\psand\\OneDrive\\Desktop\\school\\Mission11\\Mission11\\backend\\BookStore.API\\BookStore.API.csproj",
+        "projectPath": "C:\\Users\\psand\\OneDrive\\Desktop\\School\\Mission11\\Mission11\\backend\\BookStore.API\\BookStore.API.csproj",
         "packagesPath": "C:\\Users\\psand\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\psand\\OneDrive\\Desktop\\school\\Mission11\\Mission11\\backend\\BookStore.API\\obj\\",
+        "outputPath": "C:\\Users\\psand\\OneDrive\\Desktop\\School\\Mission11\\Mission11\\backend\\BookStore.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -55,6 +55,8 @@
               "version": "[10.0.3, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
               "version": "[10.0.5, )"
             },
