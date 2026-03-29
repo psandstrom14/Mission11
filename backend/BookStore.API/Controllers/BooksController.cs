@@ -17,12 +17,18 @@ namespace BookStore.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetBooks(int pageNum = 1, int pageSize = 5, string? sortBy = "Title")
+        public async Task<ActionResult> GetBooks(int pageNum = 1, int pageSize = 5, string? sortBy = "Title", [FromQuery] List<string>? category = null)
         {
             // 1. Start the database query
             var query = _context.Books.AsQueryable();
 
-            // 2. Server-Side Sorting Logic
+            // 2. Category filtering (accepts repeated query params: ?category=A&category=B)
+            if (category is { Count: > 0 })
+            {
+                query = query.Where(b => category.Contains(b.Category));
+            }
+
+            // 3. Server-Side Sorting Logic
             if (!string.IsNullOrEmpty(sortBy))
             {
                 if (sortBy.ToLower() == "title")
@@ -35,16 +41,16 @@ namespace BookStore.API.Controllers
                 }
             }
 
-            // 3. Get total count BEFORE paginating (your React app needs this to draw the page buttons)
+            // 4. Get total count BEFORE paginating (your React app needs this to draw the page buttons)
             var totalCount = await query.CountAsync();
 
-            // 4. Server-Side Pagination Logic
+            // 5. Server-Side Pagination Logic
             var books = await query
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            // 5. Return an anonymous object containing both the current page of books and the total count
+            // 6. Return an anonymous object containing both the current page of books and the total count
             return Ok(new
             {
                 Books = books,
