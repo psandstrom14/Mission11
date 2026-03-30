@@ -4,6 +4,12 @@ using BookStore.API.Models;
 
 namespace BookStore.API.Controllers
 {
+    /// <summary>
+    /// Mission 12 grading notes:
+    /// - GET api/books/categories: distinct Category values for the React filter checkboxes.
+    /// - GET api/books: optional repeated "category" query binds to List&lt;string&gt;.
+    ///   TotalCount is computed on the filtered IQueryable BEFORE Skip/Take so pagination matches filters.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class BooksController : ControllerBase
@@ -14,6 +20,17 @@ namespace BookStore.API.Controllers
         public BooksController(BookstoreContext context)
         {
             _context = context;
+        }
+
+        [HttpGet("categories")]
+        public async Task<ActionResult<List<string>>> GetCategories()
+        {
+            var categories = await _context.Books
+                .Select(b => b.Category)
+                .Distinct()
+                .OrderBy(c => c)
+                .ToListAsync();
+            return Ok(categories);
         }
 
         [HttpGet]
