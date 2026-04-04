@@ -18,6 +18,9 @@ export default function Header() {
                     <Link className="nav-link px-2" to="/cart">
                         Cart
                     </Link>
+                    <Link className="nav-link px-2" to="/admin/projects">
+                        Admin
+                    </Link>
                 </div>
             </div>
         </nav>

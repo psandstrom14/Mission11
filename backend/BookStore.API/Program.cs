@@ -8,14 +8,13 @@ builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp",
-        policy =>
-        {
-            // Allow Vite (5173) and Create React App (3000) default ports
-            policy.WithOrigins("http://localhost:5173", "http://localhost:3000") 
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        });
+    options.AddPolicy("allowReactApp", policy =>
+    {
+        // CRA default; replace with http://localhost:3001 if needed. Vite uses 5173.
+        policy.WithOrigins("http://localhost:3000", "http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
 });
 
 builder.Services.AddDbContext<BookstoreContext>(options =>
@@ -25,7 +24,7 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowReactApp"); 
+app.UseCors("allowReactApp");
 
 app.UseAuthorization();
 

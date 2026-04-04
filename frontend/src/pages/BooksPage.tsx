@@ -7,6 +7,7 @@
  */
 import { useState, useEffect } from 'react';
 import '../App.css';
+import { API_BASE, fetchProjects } from '../api/projects-api';
 import BookList from '../components/BookList';
 import type { Book } from '../components/BookList';
 import CategoryFilter from '../components/CategoryFilter';
@@ -31,25 +32,20 @@ export default function BooksPage() {
     const categoryQueryKey = selectedCategories.slice().sort().join('|');
 
     useEffect(() => {
-        fetch('http://localhost:5010/api/books/categories')
+        fetch(`${API_BASE}/books/categories`)
             .then((response) => response.json())
             .then((data: string[]) => setCategories(data))
             .catch((error) => console.error('Error fetching categories:', error));
     }, []);
 
     useEffect(() => {
-        const categoryQuery =
-            selectedCategories.length > 0
-                ? selectedCategories
-                      .map((c) => `&category=${encodeURIComponent(c)}`)
-                      .join('')
-                : '';
-
         setLoading(true);
-        fetch(
-            `http://localhost:5010/api/books?pageNum=${pageNum}&pageSize=${pageSize}&sortBy=${sortBy}${categoryQuery}`
-        )
-            .then((response) => response.json())
+        fetchProjects({
+            pageNum,
+            pageSize,
+            sortBy,
+            selectedCategories,
+        })
             .then((data) => {
                 setBooks(data.books);
                 setTotalCount(data.totalCount);
@@ -99,8 +95,7 @@ export default function BooksPage() {
                             setPageNum(1);
                         }}
                         onSortToggle={handleSortByTitle}
-                        onPrevPage={() => setPageNum(pageNum - 1)}
-                        onNextPage={() => setPageNum(pageNum + 1)}
+                        onPageChange={(page) => setPageNum(page)}
                         onAddToCart={addToCart}
                     />
                 </div>

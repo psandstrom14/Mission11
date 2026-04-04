@@ -6,6 +6,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import BooksPage from './pages/BooksPage';
 import CartPage from './pages/CartPage';
+import AdminProjectsPage from './pages/AdminProjectsPage';
 
 export default function App() {
     return (
@@ -14,6 +15,7 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<BooksPage />} />
                 <Route path="/cart" element={<CartPage />} />
+                <Route path="/admin/projects" element={<AdminProjectsPage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </>

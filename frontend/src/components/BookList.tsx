@@ -2,6 +2,7 @@
  * Book list + paging controls for the home page.
  * Rubric — Bootstrap "not in videos" #2: spinner-border (and visually-hidden) while the books API request runs.
  */
+import Pagination from './Pagination';
 import type { BookForCart } from '../context/CartContext';
 
 export interface Book {
@@ -25,8 +26,7 @@ type BookListProps = {
     sortBy: string;
     onPageSizeChange: (size: number) => void;
     onSortToggle: () => void;
-    onPrevPage: () => void;
-    onNextPage: () => void;
+    onPageChange: (page: number) => void;
     onAddToCart: (book: BookForCart) => void;
 };
 
@@ -40,8 +40,7 @@ export default function BookList({
     sortBy,
     onPageSizeChange,
     onSortToggle,
-    onPrevPage,
-    onNextPage,
+    onPageChange,
     onAddToCart,
 }: BookListProps) {
     if (loading) {
@@ -56,20 +55,16 @@ export default function BookList({
 
     return (
         <>
-            <div className="d-flex justify-content-between mb-3 flex-wrap gap-2">
-                <div>
-                    <label className="me-2">Results per page: </label>
-                    <select
-                        value={pageSize}
-                        onChange={(e) => onPageSizeChange(Number(e.target.value))}
-                        className="form-select d-inline-block w-auto"
-                    >
-                        <option value={5}>5</option>
-                        <option value={10}>10</option>
-                        <option value={20}>20</option>
-                    </select>
-                </div>
-
+            <div className="d-flex justify-content-between mb-3 flex-wrap gap-2 align-items-center">
+                <Pagination
+                    currentPage={pageNum}
+                    totalPages={totalPages}
+                    pageSize={pageSize}
+                    onPageChange={onPageChange}
+                    onPageSizeChange={onPageSizeChange}
+                    showPageNavigation={false}
+                    pageSizeSelectId="book-list-page-size"
+                />
                 <button className="btn btn-outline-primary" onClick={onSortToggle}>
                     Sort by Title {sortBy === 'Title' ? '(A-Z)' : '(Z-A)'}
                 </button>
@@ -120,29 +115,17 @@ export default function BookList({
                 </table>
             </div>
 
-            {/* Pagination uses totalPages derived from filtered totalCount (see BooksPage). */}
-            <div className="d-flex justify-content-between align-items-center">
-                <button
-                    className="btn btn-secondary"
-                    onClick={onPrevPage}
-                    disabled={pageNum === 1}
-                >
-                    Previous
-                </button>
-
-                <span>
-                    Page {pageNum} of {totalPages}
-                    {totalCount === 0 ? ' (0 results)' : ''}
-                </span>
-
-                <button
-                    className="btn btn-secondary"
-                    onClick={onNextPage}
-                    disabled={pageNum >= totalPages || totalCount === 0}
-                >
-                    Next
-                </button>
-            </div>
+            <Pagination
+                currentPage={pageNum}
+                totalPages={totalPages}
+                pageSize={pageSize}
+                onPageChange={onPageChange}
+                onPageSizeChange={onPageSizeChange}
+                showPageSizeControls={false}
+                totalItems={totalCount}
+                totalItemsLabel="results"
+                totalItemsDisplay="emptyOnly"
+            />
         </>
     );
 }
