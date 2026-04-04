@@ -6,14 +6,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
+// CORS: hardcoded origins (course pattern). Before Azure deploy, add your Static Web App URL here.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("allowReactApp", policy =>
     {
-        // CRA default; replace with http://localhost:3001 if needed. Vite uses 5173.
-        policy.WithOrigins("http://localhost:3000", "http://localhost:5173")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy.WithOrigins(
+                  "http://localhost:3000",
+                  "http://localhost:5173",
+                  "https://black-river-06eab840f.1.azurestaticapps.net")
+              .AllowAnyMethod()
+              .AllowAnyHeader();
     });
 });
 
@@ -22,9 +25,10 @@ builder.Services.AddDbContext<BookstoreContext>(options =>
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
-
+// CORS before HTTPS redirect avoids some browsers failing preflight on redirect responses.
 app.UseCors("allowReactApp");
+
+app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
